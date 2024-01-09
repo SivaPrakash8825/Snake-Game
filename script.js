@@ -1,5 +1,11 @@
 const ladder = document.querySelector(".ladder");
 
+//right =1 , down = 32
+
+let direction = 1,
+  reach = 0,
+  previousMove = "ArrowRight",
+  reachValue = 1;
 let html = "";
 const siva = (callback) => {
   for (let i = 0; i < 900; i++) {
@@ -12,7 +18,6 @@ let k = [0, 1],
   n = 1;
 
 const startgame = () => {
-  console.log(k);
   k.map((val) => {
     let box = document.getElementsByClassName(`box${val}`);
     if (box.length > 0) {
@@ -20,15 +25,18 @@ const startgame = () => {
     }
     //
   });
+
   movement(() => {
     startgame();
-    // console.log("asdf");
   });
 };
 
-const hii = () => {
-  console.log("asfd");
-};
+window.addEventListener("keydown", (event) => {
+  let keys = ["ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight"];
+  if (keys.includes(event.key)) {
+    changeKeyValue(event.key);
+  }
+});
 
 function movement(callback) {
   setTimeout(() => {
@@ -36,14 +44,52 @@ function movement(callback) {
       let box = document.getElementsByClassName(`box${val}`);
       box[0].removeAttribute("id");
     });
-    (k[0] = k[0] + 1), (k[1] = k[1] + 1);
+    if (reach) {
+      (k[0] = k[1]), (k[1] = k[1] + direction);
+      reach = 0;
+    } else {
+      (k[0] = k[0] + direction), (k[1] = k[1] + direction);
+    }
     if (k[0] == 899) {
       k = [0, 1];
     }
     callback();
-  }, 50);
+  }, 1000);
   // return 0;
 }
+
+const changeKeyValue = (key) => {
+  if (
+    key == "ArrowDown" &&
+    previousMove != "ArrowUp" &&
+    previousMove != "ArrowDown"
+  ) {
+    direction = 30;
+    reach = 1;
+  } else if (
+    key == "ArrowRight" &&
+    previousMove != "ArrowLeft" &&
+    previousMove != "ArrowRight"
+  ) {
+    direction = 1;
+    reach = 1;
+  } else if (
+    key == "ArrowLeft" &&
+    previousMove != "ArrowRight" &&
+    previousMove != "ArrowLeft"
+  ) {
+    direction = -1;
+    reach = 1;
+  } else if (
+    key == "ArrowUp" &&
+    previousMove != "ArrowDown" &&
+    previousMove != "ArrowUp"
+  ) {
+    direction = -30;
+    reach = 1;
+  }
+  previousMove = key;
+};
 
 siva(() => {
   startgame();
