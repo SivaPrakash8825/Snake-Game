@@ -1,5 +1,5 @@
 const ladder = document.querySelector(".ladder");
-
+let fruit;
 //right =1 , down = 32
 
 let direction = 1,
@@ -12,10 +12,22 @@ const siva = (callback) => {
     html += `<div class='box${i} box'></div>`;
   }
   ladder.innerHTML = html;
-  callback();
+  generateFruit();
+  if (fruit) {
+    callback();
+  }
 };
 let k = [0, 1],
   n = 1;
+
+const generateFruit = () => {
+  fruit = Math.floor(Math.random() * 900);
+  let box = document.getElementsByClassName(`box${fruit}`);
+  if (box.length > 0) {
+    box[0].setAttribute("id", "fruit");
+  }
+  return fruit;
+};
 
 const startgame = () => {
   k.map((val) => {
@@ -44,17 +56,50 @@ function movement(callback) {
       let box = document.getElementsByClassName(`box${val}`);
       box[0].removeAttribute("id");
     });
-    if (reach) {
-      (k[0] = k[1]), (k[1] = k[1] + direction);
-      reach = 0;
-    } else {
-      (k[0] = k[0] + direction), (k[1] = k[1] + direction);
+    // if (reach) {
+    //   let temp = k[0];
+    //   k.map((val, index) => {
+    //     if (index != k.length - 1) k[index] = k[index + 1];
+    //     else k[k.length - 1] = k[k.length - 1] + direction;
+    //   });
+    //   if (
+    //     ((k[k.length - 1] + 1) % 30 == 1 && previousMove == "ArrowRight") ||
+    //     ((k[k.length - 1] + 1) % 30 == 0 && previousMove == "ArrowLeft")
+    //   ) {
+    //     alert("asdf");
+    //   }
+    //   if (k[k.length - 1] == fruit) {
+    //     k.unshift(temp);
+    //   }
+    //   reach = 0;
+    // } else {
+    let temp = k[0];
+    k.map((val, index) => {
+      if (index != k.length - 1) k[index] = k[index + 1];
+      else k[k.length - 1] = k[k.length - 1] + direction;
+      // k[index] = k[index] + direction;
+    });
+
+    if (
+      ((k[k.length - 1] + 1) % 30 == 1 && previousMove == "ArrowRight") ||
+      ((k[k.length - 1] + 1) % 30 == 0 && previousMove == "ArrowLeft")
+    ) {
+      alert("asdf");
     }
+    if (k.indexOf(k[k.length - 1]) < k.length - 1) {
+      alert("out");
+    }
+    if (k[k.length - 1] == fruit) {
+      k.unshift(temp);
+      generateFruit();
+    }
+    // (k[0] = k[0] + direction), (k[1] = k[1] + direction);
+
     if (k[0] == 899) {
       k = [0, 1];
     }
     callback();
-  }, 1000);
+  }, 200);
   // return 0;
 }
 
@@ -87,6 +132,7 @@ const changeKeyValue = (key) => {
   ) {
     direction = -30;
     reach = 1;
+    // k.push(k[k.length - 1] - 32);
   }
   previousMove = key;
 };
