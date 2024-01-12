@@ -9,8 +9,20 @@
   </head>
   <body>
     <div class="container">
+      <div>
+        <p>score : <span id="score">0</span></p>
+        <button onclick="startTheGame(1)">start</button>
+        <!-- <button>reset</button> -->
+      </div>
+
       <div class="ladder"></div>
     </div>
+    <div class="ScoreBoard hide">
+      <div class="menulist">
+        <p>score : <span id="score1">10</span></p>
+        <button onclick="startTheGame(0)">restart</button>
+      </div>
+    </div>
+    <script src="script.js"></script>
   </body>
-  <script src="script.js"></script>
 </html>

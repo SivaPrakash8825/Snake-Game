@@ -1,45 +1,60 @@
 const ladder = document.querySelector(".ladder");
+let scoreid = document.getElementById("score");
+let score1 = document.getElementById("score1");
+let ScoreBoard = document.getElementsByClassName("ScoreBoard");
 let fruit;
-//right =1 , down = 32
 
+//right =1 , down = 32
+let score = 0,
+  started = 0;
 let direction = 1,
   reach = 0,
   previousMove = "ArrowRight",
   reachValue = 1;
 let html = "";
-const siva = (callback) => {
+const siva = () => {
   for (let i = 0; i < 900; i++) {
-    html += `<div class='box${i} box'></div>`;
+    html += `<div class='box${i} box' ${i == 1 ? 'id="head"' : ""} ${
+      i == 0 ? 'id="coin"' : ""
+    }"></div>`;
   }
   ladder.innerHTML = html;
   generateFruit();
-  if (fruit) {
-    callback();
-  }
 };
 let k = [0, 1],
   n = 1;
 
 const generateFruit = () => {
   fruit = Math.floor(Math.random() * 900);
+  fruittype = Math.floor(Math.random() * 4 + 1);
+
+  if (k.includes(fruit)) {
+    generateFruit();
+  }
   let box = document.getElementsByClassName(`box${fruit}`);
   if (box.length > 0) {
-    box[0].setAttribute("id", "fruit");
+    box[0].setAttribute("id", `fruit${fruittype}`);
   }
   return fruit;
 };
 
 const startgame = () => {
-  k.map((val) => {
+  // console.log("asdf");
+  k.map((val, index) => {
     let box = document.getElementsByClassName(`box${val}`);
-    if (box.length > 0) {
+
+    if (k.length - 1 == index) {
+      box[0].setAttribute("id", "head");
+    } else if (box.length > 0) {
       box[0].setAttribute("id", "coin");
     }
     //
   });
 
   movement(() => {
-    startgame();
+    if (ScoreBoard[0].classList.contains("hide")) {
+      startgame();
+    }
   });
 };
 
@@ -56,51 +71,37 @@ function movement(callback) {
       let box = document.getElementsByClassName(`box${val}`);
       box[0].removeAttribute("id");
     });
-    // if (reach) {
-    //   let temp = k[0];
-    //   k.map((val, index) => {
-    //     if (index != k.length - 1) k[index] = k[index + 1];
-    //     else k[k.length - 1] = k[k.length - 1] + direction;
-    //   });
-    //   if (
-    //     ((k[k.length - 1] + 1) % 30 == 1 && previousMove == "ArrowRight") ||
-    //     ((k[k.length - 1] + 1) % 30 == 0 && previousMove == "ArrowLeft")
-    //   ) {
-    //     alert("asdf");
-    //   }
-    //   if (k[k.length - 1] == fruit) {
-    //     k.unshift(temp);
-    //   }
-    //   reach = 0;
-    // } else {
     let temp = k[0];
     k.map((val, index) => {
       if (index != k.length - 1) k[index] = k[index + 1];
       else k[k.length - 1] = k[k.length - 1] + direction;
-      // k[index] = k[index] + direction;
     });
 
     if (
       ((k[k.length - 1] + 1) % 30 == 1 && previousMove == "ArrowRight") ||
-      ((k[k.length - 1] + 1) % 30 == 0 && previousMove == "ArrowLeft")
+      ((k[k.length - 1] + 1) % 30 == 0 && previousMove == "ArrowLeft") ||
+      k[k.length - 1] < 0 ||
+      k[k.length - 1] > 899
     ) {
-      alert("asdf");
+      score1.innerText = score;
+      ScoreBoard[0].classList.toggle("hide");
     }
     if (k.indexOf(k[k.length - 1]) < k.length - 1) {
-      alert("out");
+      score1.innerText = score;
+      ScoreBoard[0].classList.toggle("hide");
     }
     if (k[k.length - 1] == fruit) {
+      score = score + 50;
+      scoreid.innerText = score;
       k.unshift(temp);
       generateFruit();
     }
-    // (k[0] = k[0] + direction), (k[1] = k[1] + direction);
 
-    if (k[0] == 899) {
-      k = [0, 1];
-    }
+    // if (k[0] == 899) {
+    //   k = [0, 1];
+    // }
     callback();
   }, 200);
-  // return 0;
 }
 
 const changeKeyValue = (key) => {
@@ -109,34 +110,62 @@ const changeKeyValue = (key) => {
     previousMove != "ArrowUp" &&
     previousMove != "ArrowDown"
   ) {
-    direction = 30;
-    reach = 1;
+    if (k[k.length - 1] + 30 != k[k.length - 2]) {
+      direction = 30;
+      reach = 1;
+      previousMove = key;
+    }
   } else if (
     key == "ArrowRight" &&
     previousMove != "ArrowLeft" &&
     previousMove != "ArrowRight"
   ) {
-    direction = 1;
-    reach = 1;
+    if (k[k.length - 1] + 1 != k[k.length - 2]) {
+      direction = 1;
+      reach = 1;
+      previousMove = key;
+    }
   } else if (
     key == "ArrowLeft" &&
     previousMove != "ArrowRight" &&
     previousMove != "ArrowLeft"
   ) {
-    direction = -1;
-    reach = 1;
+    if (k[k.length - 1] - 1 != k[k.length - 2]) {
+      direction = -1;
+      reach = 1;
+      previousMove = key;
+    }
   } else if (
     key == "ArrowUp" &&
     previousMove != "ArrowDown" &&
     previousMove != "ArrowUp"
   ) {
-    direction = -30;
-    reach = 1;
+    if (k[k.length - 1] - 30 != k[k.length - 2]) {
+      direction = -30;
+      reach = 1;
+      previousMove = key;
+    }
     // k.push(k[k.length - 1] - 32);
   }
-  previousMove = key;
 };
 
-siva(() => {
-  startgame();
-});
+const startTheGame = (val) => {
+  if (!started && val) {
+    started = 1;
+    startgame();
+  } else if (!val) {
+    k = [0, 1];
+    direction = 1;
+
+    startgame();
+    score = 0;
+    scoreid.innerText = score;
+    ScoreBoard[0].classList.toggle("hide");
+  }
+};
+
+// setInterval(() => {
+//   console.log("tima");
+// }, 100);
+
+siva();

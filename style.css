@@ -15,20 +15,95 @@ body {
   width: 600px;
   height: 600px;
   display: grid;
-  grid-template-columns: repeat(30, 20px);
-  grid-template-rows: repeat(30, 20px);
-
-  background: white;
+  border-radius: 4px;
+  grid-template-columns: repeat(30, 1fr);
+  grid-template-rows: repeat(30, 1fr);
+  background-image: url("./fruitsImage/background.webp");
+  background-size: cover;
+  /* background: black; */
 }
 .box {
-  border: 0.1px solid black;
+  border: 0px solid black;
 }
 
 #coin {
-  background: pink;
-  border-radius: 50%;
+  background: #bef264;
+  border-radius: 30%;
 }
 
-#fruit {
-  background: red;
+#head {
+  background-image: url("./snake\ head.png");
+  background-size: cover;
+}
+
+#fruit1 {
+  border-radius: 50%;
+  background-image: url("./fruitsImage/fruit1.png");
+  background-size: cover;
+  /* background: red; */
+}
+#fruit2 {
+  border-radius: 50%;
+  background-image: url("./fruitsImage/fruit2.png");
+  background-size: cover;
+  /* background: red; */
+}
+#fruit3 {
+  border-radius: 50%;
+  background-image: url("./fruitsImage/fruit3.png");
+  background-size: cover;
+  /* background: red; */
+}
+#fruit4 {
+  border-radius: 50%;
+  background-image: url("./fruitsImage/fruit4.png");
+  background-size: cover;
+  /* background: red; */
+}
+
+p {
+  margin-bottom: 20px;
+}
+
+.ScoreBoard {
+  position: fixed;
+  width: 100vh;
+  height: 100vh;
+
+  background-color: rgb(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 111;
+}
+
+.menulist {
+  background-color: wheat;
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 200px;
+}
+
+.active {
+  display: block;
+}
+.hide {
+  display: none;
+}
+
+@media screen and (max-width: 700px) {
+  .ladder {
+    width: 350px;
+    height: 350px;
+    display: grid;
+    border-radius: 4px;
+    grid-template-columns: repeat(30, 1fr);
+    grid-template-rows: repeat(30, 1fr);
+    background-image: url("./fruitsImage/background.webp");
+    background-size: cover;
+    /* background: black; */
+  }
 }
