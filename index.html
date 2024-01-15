@@ -9,9 +9,12 @@
   </head>
   <body>
     <div class="container">
-      <div>
+      <div class="startdiv">
         <p>score : <span id="score">0</span></p>
-        <button onclick="startTheGame(1)">start</button>
+        <button onclick="startTheGame(1)" class="button-78" role="button">
+          Start
+        </button>
+
         <!-- <button>reset</button> -->
       </div>
 
@@ -20,7 +23,9 @@
     <div class="ScoreBoard hide">
       <div class="menulist">
         <p>score : <span id="score1">10</span></p>
-        <button onclick="startTheGame(0)">restart</button>
+        <button class="button-64" role="button">
+          <span class="text" onclick="startTheGame(0)"> restart</span>
+        </button>
       </div>
     </div>
     <script src="script.js"></script>

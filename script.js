@@ -2,8 +2,57 @@ const ladder = document.querySelector(".ladder");
 let scoreid = document.getElementById("score");
 let score1 = document.getElementById("score1");
 let ScoreBoard = document.getElementsByClassName("ScoreBoard");
-let fruit;
+let fruit, startX, startY;
 
+document.addEventListener("touchstart", (e) => {
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
+});
+document.addEventListener("touchmove", (e) => {
+  if (startX !== undefined && startY !== undefined) {
+    const currentX = e.touches[0].clientX;
+    const currentY = e.touches[0].clientY;
+    const deltaX = currentX - startX;
+    const deltaY = currentY - startY;
+    let dir;
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      // Horizontal dragging
+
+      if (deltaX > 0) {
+        dir = "ArrowRight";
+
+        // You can perform actions for dragging right here
+      } else {
+        dir = "ArrowLeft";
+
+        // You can perform actions for dragging left here
+      }
+    } else {
+      // Vertical dragging
+      if (deltaY > 0) {
+        dir = "ArrowDown";
+        e.preventDefault();
+        // alert("Dragging Down");
+        // You can perform actions for dragging down here
+      } else {
+        dir = "ArrowUp";
+        // alert("Dragging Up");
+        // You can perform actions for dragging up here
+      }
+    }
+    if (dir) {
+      changeKeyValue(dir);
+    }
+    dir = undefined;
+    // Reset startX and startY to undefined to handle the next touchstart
+    startX = undefined;
+    startY = undefined;
+  }
+});
+document.addEventListener("touchend", () => {
+  startX = undefined;
+  startY = undefined;
+});
 //right =1 , down = 32
 let score = 0,
   started = 0;
@@ -84,10 +133,12 @@ function movement(callback) {
       k[k.length - 1] > 899
     ) {
       score1.innerText = score;
+      previousMove = "ArrowRight";
       ScoreBoard[0].classList.toggle("hide");
     }
     if (k.indexOf(k[k.length - 1]) < k.length - 1) {
       score1.innerText = score;
+      previousMove == "ArrowRight";
       ScoreBoard[0].classList.toggle("hide");
     }
     if (k[k.length - 1] == fruit) {
