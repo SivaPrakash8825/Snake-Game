@@ -5,7 +5,8 @@
 }
 body {
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  overscroll-behavior: contain;
   background-color: rgb(16, 236, 162);
   display: flex;
   justify-content: center;
